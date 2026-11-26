@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encuesta de horarios · Congregación El Río, Panajachel</title>
+<meta name="description" content="Resultados de la encuesta de cambio de horario de reuniones">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕖</text></svg>">
+<style>
+  /* =============== Colores (claro / oscuro) =============== */
+  :root {
+    --surface-0: #f6f6f4; --surface-1: #ffffff; --border: #e4e4e0;
+    --text-primary: #191919; --text-secondary: #666666;
+    --nuevo: #257de0; --actual: #f47230;          /* paleta validada, slots 1 y 2 */
+    --bar: #257de0; --bar-top: #1b64be; --track: #efefef; --accent-bg: #eaf3fd;
+    --ok-bg: #e7f6ea; --warn-bg: #fdf1e4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface-0: #111111; --surface-1: #191919; --border: #2e2e2e;
+      --text-primary: #efefef; --text-secondary: #9c9c9c;
+      --nuevo: #338ced; --actual: #e76624;
+      --bar: #338ced; --bar-top: #6aabf1; --track: #2a2a2a; --accent-bg: #16263a;
+      --ok-bg: #13301a; --warn-bg: #3a2614;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--surface-0); color: var(--text-primary);
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  header.wrap { padding-top: 28px; display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+  header .titles { flex: 1; min-width: 240px; }
+  h1 { font-size: 24px; margin: 0 0 2px; letter-spacing: -0.01em; }
+  .sub { color: var(--text-secondary); margin: 0; }
+  .actions { display: flex; gap: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font: inherit; font-size: 14px;
+         background: var(--surface-1); color: var(--text-primary); border: 1px solid var(--border);
+         border-radius: 8px; padding: 7px 12px; }
+  .btn:hover { background: var(--track); }
+  .btn.primary { background: var(--bar); color: #fff; border-color: transparent; font-weight: 600; }
+  main.wrap { padding-bottom: 48px; }
+
+  .notice { background: var(--accent-bg); border-radius: 10px; padding: 9px 14px; font-size: 14px; margin: 16px 0; }
+  .notice[hidden], .admin[hidden] { display: none !important; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--surface-1);
+             border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-top: 16px; }
+  .toolbar input[type=url] { flex: 1; min-width: 240px; font: inherit; padding: 7px 10px; border-radius: 8px;
+             border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary); }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .kpi .label { font-size: 13px; color: var(--text-secondary); }
+  .kpi .value { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .kpi .note { font-size: 13px; color: var(--text-secondary); }
+  .progress { height: 8px; background: var(--track); border-radius: 4px; margin: 8px 0 4px; overflow: hidden; }
+  .progress > div { height: 100%; background: var(--bar); border-radius: 0 4px 4px 0; transition: width .5s ease; }
+
+  h2.section { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-secondary);
+               margin: 26px 0 10px; font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 16px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .wrap { padding: 0 14px; } }
+  .card h3 { font-size: 16px; margin: 0 0 2px; }
+  .card .meta { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; display: flex; justify-content: space-between; gap: 8px; }
+  .link { white-space: nowrap; background: none; border: 0; color: var(--bar); cursor: pointer; font: inherit; font-size: 13px; padding: 0; }
+
+  /* ---- Resultado principal ---- */
+  .verdict { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin: 6px 0 2px; line-height: 1.25; }
+  .verdict small { display: block; font-size: 14px; font-weight: 500; color: var(--text-secondary); margin-top: 2px; }
+  .split { display: flex; height: 40px; margin: 16px 0 10px; gap: 2px; }
+  .split .seg { height: 100%; display: flex; align-items: center; padding: 0 10px; color: #fff; font-weight: 700;
+                font-size: 15px; white-space: nowrap; overflow: hidden; min-width: 0; transition: flex-grow .5s ease; cursor: default; }
+  .split .seg:first-child { border-radius: 6px 0 0 6px; }
+  .split .seg:last-child  { border-radius: 0 6px 6px 0; justify-content: flex-end; }
+  .split .seg:only-child  { border-radius: 6px; }
+  .seg.nuevo { background: var(--nuevo); } .seg.actual { background: var(--actual); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .legend b { font-variant-numeric: tabular-nums; }
+  .pill { display: inline-block; font-size: 12px; font-weight: 600; border-radius: 999px; padding: 2px 9px; margin-top: 10px; }
+  .pill.ok { background: var(--ok-bg); } .pill.warn { background: var(--warn-bg); }
+
+  /* ---- Barras horizontales ---- */
+  .row { display: grid; grid-template-columns: minmax(120px, 40%) 1fr auto; gap: 10px; align-items: center; padding: 5px 4px; }
+  .row:hover { background: var(--track); border-radius: 6px; }
+  .row .name { font-size: 14px; overflow-wrap: anywhere; }
+  .row .fill { height: 14px; background: var(--bar); border-radius: 0 4px 4px 0; min-width: 2px; transition: width .5s ease; }
+  .row.top .fill { background: var(--bar-top); } .row.top .name { font-weight: 600; }
+  .row .num { font-size: 13px; color: var(--text-secondary); font-variant-numeric: tabular-nums; min-width: 78px; text-align: right; }
+
+  /* ---- Respuestas por día ---- */
+  .days { display: flex; align-items: flex-end; gap: 2px; height: 150px; border-bottom: 1px solid var(--border); padding-top: 18px; }
+  .day { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; min-width: 0; cursor: default; }
+  .day .v { font-size: 12px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+  .day .b { width: 100%; max-width: 44px; background: var(--bar); border-radius: 4px 4px 0 0; min-height: 2px; transition: height .5s ease; }
+  .day:hover .b { background: var(--bar-top); }
+  .daylabels { display: flex; gap: 2px; font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+  .daylabels span { flex: 1; text-align: center; min-width: 0; overflow: visible; white-space: nowrap; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--border); }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+
+  #tip { position: fixed; pointer-events: none; background: var(--text-primary); color: var(--surface-1);
+         padding: 6px 10px; border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity .1s; z-index: 10; }
+  footer { color: var(--text-secondary); font-size: 13px; margin-top: 28px; }
+  .empty { color: var(--text-secondary); padding: 30px 0; text-align: center; }
+
+  /* ---- Modo presentación ---- */
+  body.present { font-size: 18px; }
+  body.present .wrap { max-width: 1500px; }
+  body.present h1 { font-size: 36px; }
+  body.present .verdict { font-size: 32px; }
+  body.present .split { height: 60px; } body.present .split .seg { font-size: 20px; }
+  body.present .kpi .value { font-size: 44px; }
+  body.present footer, body.present .notice { display: none; }
+
+  @media print {
+    .actions, .admin, .link { display: none !important; }
+    body { background: #fff; } .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="titles">
+    <h1>Encuesta de cambio de horario de reuniones</h1>
+    <p class="sub">Congregación El Río · Panajachel, Sololá</p>
+  </div>
+  <div class="actions">
+    <button class="btn" id="refresh" title="Traer las respuestas más recientes">↻ Actualizar</button>
+    <button class="btn" id="present" title="Pantalla completa con letra grande">⛶ Presentar</button>
+    <button class="btn" id="print" title="Imprimir o guardar como PDF">🖨️</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Herramientas ocultas: se ven agregando ?admin a la dirección -->
+  <div class="toolbar admin" hidden>
+    <label class="btn primary" for="file">📂 Cargar CSV</label>
+    <input id="file" type="file" accept=".csv,.txt" hidden>
+    <button class="btn" id="sample">Datos de ejemplo</button>
+    <input id="sheetUrl" type="url" placeholder="URL /exec de Apps Script o enlace de Google Sheets">
+    <button class="btn primary" id="connect">🔗 Conectar</button>
+  </div>
+
+  <div class="notice" id="notice">⏳ Conectando con los resultados de la encuesta…</div>
+
+  <section class="kpis" id="kpis"></section>
+
+  <h2 class="section">Resultado</h2>
+  <section class="grid" id="results"></section>
+
+  <h2 class="section" id="crossTitle">Las dos reuniones juntas</h2>
+  <section class="grid" id="detail"></section>
+
+  <section id="others"></section>
+
+  <footer>Se actualiza solo cada 5 minutos · Los datos se procesan en este navegador.</footer>
+</main>
+<div id="tip"></div>
+
+<script>
+/* ================== CONFIGURACIÓN ================== */
+// URL de la aplicación web de Apps Script (termina en /exec)
+const DEFAULT_URL = "https://script.google.com/macros/s/AKfycbxzJY-DWVcMRQLRG1DcUtHl66mNRvz9dn_1P7WeVBRvf31FngK39Efgrqfm5HDRLvp3/exec";
+// Cuántas personas se espera que respondan (publicadores y asistentes).
+// Déjalo en 0 para no mostrar el porcentaje de participación. También se puede poner en la dirección: ?meta=80
+const META_RESPUESTAS = 0;
+const REFRESH_MIN = 5;
+/* =================================================== */
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pct = (n, d) => d ? Math.round(n / d * 100) : 0;
+const params = new URLSearchParams(location.search);
+const META = parseInt(params.get("meta")) || META_RESPUESTAS;
+
+/* ---------- CSV ---------- */
+function parseCSV(text) {
+  text = text.replace(/^﻿/, "");
+  const first = text.split(/\r?\n/)[0], counts = { ",": 0, ";": 0, "\t": 0 }; let q = false;
+  for (const ch of first) { if (ch === '"') q = !q; else if (!q && ch in counts) counts[ch]++; }
+  const d = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+  const rows = []; let row = [], field = ""; q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else q = false; } else field += c; }
+    else if (c === '"') q = true;
+    else if (c === d) { row.push(field); field = ""; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(field); field = "";
+      if (row.some(v => v.trim() !== "")) rows.push(row); row = []; }
+    else field += c;
+  }
+  row.push(field); if (row.some(v => v.trim() !== "")) rows.push(row);
+  const headers = (rows.shift() || []).map(h => h.trim());
+  return { headers, data: rows.map(r => Object.fromEntries(headers.map((h, i) => [h, (r[i] ?? "").trim()]))) };
+}
+
+/* ---------- Análisis ---------- */
+const IGNORE = /^_|marca temporal|timestamp|^start$|^end$|^today$|deviceid|uuid|__version__|instanceid|^meta/i;
+const pretty = h => h.includes("/") ? h.split("/").pop() : h;
+const kindOf = v => /\(nuevo\)/i.test(v) ? "nuevo" : /\(actual\)/i.test(v) ? "actual" : null;
+const cleanOpt = v => v.replace(/\s*\((nuevo|actual)\)\s*/i, "");
+const shortQ = t => /entre semana/i.test(t) ? "Entre semana" : /fin de semana/i.test(t) ? "Fin de semana" : t;
+
+function tally(arr) { const m = new Map(); arr.forEach(v => m.set(v, (m.get(v) || 0) + 1)); return m; }
+
+function analyze(headers, data) {
+  const vs = [], other = [];
+  headers.forEach(h => {
+    if (IGNORE.test(h) || IGNORE.test(pretty(h))) return;
+    const vals = data.map(r => r[h]).filter(Boolean);
+    if (!vals.length) return;
+    const distinct = [...new Set(vals)];
+    if (distinct.length <= 4 && distinct.every(kindOf)) vs.push({ key: h, title: pretty(h) });
+    else if (distinct.length <= 15) other.push({ key: h, title: pretty(h) });
+  });
+  const timeCol = headers.find(h => /_submission_time/i.test(h)) || headers.find(h => /marca temporal|timestamp|^end$|^start$/i.test(h));
+  return { vs, other, timeCol };
+}
+
+function parseDate(v) {
+  if (!v) return null;
+  let m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);       // dd/mm/aaaa (Google Forms)
+  if (m) return new Date(+m[3], +m[2] - 1, +m[1], +(m[4] || 0), +(m[5] || 0));
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/.test(v)) v += "Z";           // Kobo _submission_time = UTC
+  const d = new Date(v); return isNaN(d) ? null : d;
+}
+
+/* ---------- Estado y carga ---------- */
+let state = { headers: [], data: [], a: { vs: [], other: [] } }, source = null, timer = null, koboTime = "";
+
+function setData({ headers, data }) { state = { headers, data, a: analyze(headers, data) }; render(); }
+
+function toCsvUrl(u) {
+  if (/\/spreadsheets\/d\/e\//.test(u)) return u.includes("output=csv") ? u : u.replace(/\/pub(html)?(\?.*)?$/, "/pub") + "?output=csv";
+  const m = u.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  if (m) return `https://docs.google.com/spreadsheets/d/${m[1]}/gviz/tq?tqx=out:csv&gid=${(u.match(/[#&?]gid=(\d+)/) || [])[1] || "0"}`;
+  return u;
+}
+
+async function fetchSource(quiet) {
+  if (!source) return;
+  const btn = $("refresh"); btn.disabled = true; btn.textContent = "↻ Actualizando…";
+  try {
+    const isScript = /script\.google(usercontent)?\.com/.test(source);
+    const src = isScript ? source : toCsvUrl(source);
+    const res = await fetch(src + (src.includes("?") ? "&" : "?") + "t=" + Date.now());
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const text = await res.text();
+    if (/^\s*<!DOCTYPE|<html/i.test(text)) throw new Error(isScript ? "la aplicación web no tiene acceso para “Cualquier usuario”" : "la hoja no es pública");
+    if (isScript) {
+      const json = JSON.parse(text), rows = Array.isArray(json) ? json : (json.datos || []);
+      koboTime = json.actualizado || "";
+      const headers = rows.length ? Object.keys(rows[0]) : [];
+      setData({ headers, data: rows.map(r => Object.fromEntries(headers.map(h => [h, String(r[h] ?? "").trim()]))) });
+    } else { koboTime = ""; setData(parseCSV(text)); }
+    const fmt = d => new Date(d).toLocaleString("es-GT", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+    $("notice").hidden = false;
+    $("notice").innerHTML = `🟢 En vivo · revisado ${fmt(Date.now())}` + (koboTime ? ` · datos traídos de Kobo: ${fmt(koboTime)}` : "");
+  } catch (err) {
+    if (!quiet || !state.data.length) {
+      $("notice").hidden = false;
+      $("notice").innerHTML = `⚠️ No se pudieron leer los resultados (${esc(err.message)}). Intenta con ↻ Actualizar en un momento.`;
+    }
+  } finally { btn.disabled = false; btn.textContent = "↻ Actualizar"; }
+}
+
+function connect(u) {
+  source = (u || "").trim(); if (!source) return;
+  $("sheetUrl").value = source;
+  try { localStorage.setItem("sheetUrl", source); } catch (e) {}
+  clearInterval(timer); fetchSource();
+  timer = setInterval(() => fetchSource(true), REFRESH_MIN * 60 * 1000);
+}
+
+/* ---------- Render ---------- */
+function render() {
+  const { data, a } = state, n = data.length;
+
+  // --- KPIs ---
+  let k = `<div class="card kpi"><div class="label">Respuestas</div><div class="value">${n}</div>`;
+  if (META > 0) k += `<div class="progress"><div style="width:${Math.min(100, pct(n, META))}%"></div></div>
+      <div class="note">${pct(n, META)}% de participación · meta ${META} personas</div>`;
+  else k += `<div class="note">personas que respondieron</div>`;
+  k += `</div>`;
+  if (a.timeCol) {
+    const dates = data.map(r => parseDate(r[a.timeCol])).filter(Boolean).sort((x, y) => y - x);
+    if (dates.length) {
+      const last = dates[0], mins = Math.round((Date.now() - last) / 60000);
+      const rel = mins < 0 ? "reciente" : mins < 1 ? "hace un momento" : mins < 60 ? `hace ${mins} min` : mins < 1440 ? `hace ${Math.round(mins / 60)} h` : `hace ${Math.round(mins / 1440)} días`;
+      k += `<div class="card kpi"><div class="label">Última respuesta</div><div class="value" style="font-size:24px">${rel}</div>
+        <div class="note">${last.toLocaleString("es-GT", { weekday: "long", day: "numeric", month: "long", hour: "numeric", minute: "2-digit" })}</div></div>`;
+    }
+  }
+  if (a.vs.length >= 2) {
+    const both = data.filter(r => a.vs.every(q => kindOf(r[q.key]) === "nuevo")).length;
+    const answered = data.filter(r => a.vs.every(q => r[q.key])).length;
+    k += `<div class="card kpi"><div class="label">Quieren los dos horarios nuevos</div>
+      <div class="value">${pct(both, answered)}%</div><div class="note">${both} de ${answered} personas</div></div>`;
+  }
+  $("kpis").innerHTML = k;
+
+  // --- Resultado por reunión ---
+  $("results").innerHTML = a.vs.length ? a.vs.map(q => {
+    const vals = data.map(r => r[q.key]).filter(Boolean), tot = vals.length;
+    const m = tally(vals);
+    const optN = [...m.keys()].find(v => kindOf(v) === "nuevo") || "", optA = [...m.keys()].find(v => kindOf(v) === "actual") || "";
+    const nN = m.get(optN) || 0, nA = m.get(optA) || 0;
+    const pN = pct(nN, tot), pA = tot ? 100 - pN : 0;
+    let verdict, pill;
+    if (!tot) { verdict = "Aún sin respuestas"; pill = ""; }
+    else if (nN === nA) { verdict = `Empate: ${pN}% y ${pA}%`; pill = `<span class="pill warn">Empate</span>`; }
+    else {
+      const winN = nN > nA, opt = winN ? optN : optA, p = winN ? pN : pA;
+      verdict = `${p}% prefiere el horario ${winN ? "nuevo" : "actual"}<small>${esc(cleanOpt(opt))}</small>`;
+      pill = Math.abs(pN - pA) < 10 ? `<span class="pill warn">Diferencia pequeña (${Math.abs(nN - nA)} votos)</span>`
+                                    : `<span class="pill ok">Ventaja clara</span>`;
+    }
+    const seg = (cls, cnt, p, opt) => cnt ? `<div class="seg ${cls}" style="flex-grow:${cnt}" data-tip="${esc(opt)}: ${cnt} votos (${p}%)">${p >= 12 ? p + "%" : ""}</div>` : "";
+    return `<div class="card"><h3>${esc(shortQ(q.title))}</h3>
+      <div class="meta"><span>${tot} respuestas</span></div>
+      <div class="verdict">${verdict}</div>
+      <div class="split">${tot ? seg("nuevo", nN, pN, optN) + seg("actual", nA, pA, optA) : `<div class="seg" style="flex-grow:1;background:var(--track)"></div>`}</div>
+      <div class="legend">
+        <span><i style="background:var(--nuevo)"></i>Nuevo · ${esc(cleanOpt(optN) || "—")} · <b>${nN}</b></span>
+        <span><i style="background:var(--actual)"></i>Actual · ${esc(cleanOpt(optA) || "—")} · <b>${nA}</b></span>
+      </div>${pill}</div>`;
+  }).join("") : `<div class="card empty">Aún no hay respuestas para mostrar.</div>`;
+
+  // --- Las dos reuniones juntas + respuestas por día ---
+  let det = "";
+  if (a.vs.length >= 2) {
+    const [q1, q2] = a.vs, s1 = shortQ(q1.title).toLowerCase(), s2 = shortQ(q2.title).toLowerCase();
+    const both = data.filter(r => r[q1.key] && r[q2.key]);
+    const combos = [
+      ["Los dos horarios nuevos", r => kindOf(r[q1.key]) === "nuevo" && kindOf(r[q2.key]) === "nuevo"],
+      [`Solo cambiar ${s1}`, r => kindOf(r[q1.key]) === "nuevo" && kindOf(r[q2.key]) === "actual"],
+      [`Solo cambiar ${s2}`, r => kindOf(r[q1.key]) === "actual" && kindOf(r[q2.key]) === "nuevo"],
+      ["Dejar los dos horarios actuales", r => kindOf(r[q1.key]) === "actual" && kindOf(r[q2.key]) === "actual"],
+    ].map(([name, f]) => [name, both.filter(f).length]);
+    det += barCard("¿Qué combinación prefieren?", `${both.length} personas respondieron las dos preguntas`, combos, both.length, false);
+  }
+  if (a.timeCol) {
+    const byDay = new Map();
+    data.forEach(r => { const d = parseDate(r[a.timeCol]); if (!d) return;
+      const key = d.toLocaleDateString("en-CA"); byDay.set(key, (byDay.get(key) || 0) + 1); });
+    if (byDay.size) {
+      const keys = [...byDay.keys()].sort(), start = new Date(keys[0] + "T12:00"), end = new Date(keys.at(-1) + "T12:00");
+      const days = []; for (let d = new Date(start); d <= end && days.length < 60; d.setDate(d.getDate() + 1)) {
+        const key = d.toLocaleDateString("en-CA"); days.push([new Date(d), byDay.get(key) || 0]); }
+      const max = Math.max(...days.map(x => x[1]));
+      const lbl = d => d.toLocaleDateString("es-GT", { weekday: "short", day: "numeric" });
+      const every = Math.ceil(days.length / (innerWidth < 600 ? 6 : 14));
+      det += `<div class="card"><h3>Respuestas por día</h3>
+        <div class="meta"><span>Para saber si conviene recordar la encuesta</span><button class="link" data-toggle>Ver tabla</button></div>
+        <div class="viz"><div class="days">${days.map(([d, c]) => `<div class="day" data-tip="${esc(d.toLocaleDateString("es-GT", { weekday: "long", day: "numeric", month: "long" }))}: ${c} respuestas">
+          ${days.length <= 14 && c ? `<span class="v">${c}</span>` : ""}<div class="b" style="height:${c / max * 100}%"></div></div>`).join("")}</div>
+        <div class="daylabels">${days.map(([d], i) => `<span>${i % every === 0 ? esc(lbl(d)) : ""}</span>`).join("")}</div></div>
+        <table hidden><thead><tr><th>Día</th><th class="n">Respuestas</th></tr></thead><tbody>
+        ${days.map(([d, c]) => `<tr><td>${esc(d.toLocaleDateString("es-GT", { weekday: "long", day: "numeric", month: "long" }))}</td><td class="n">${c}</td></tr>`).join("")}</tbody></table></div>`;
+    }
+  }
+  $("detail").innerHTML = det;
+  $("crossTitle").hidden = !det;
+
+  // --- Otras preguntas (si el formulario crece) ---
+  $("others").innerHTML = a.other.length ? `<h2 class="section">Otras preguntas</h2><div class="grid">` +
+    a.other.map(q => { const vals = data.map(r => r[q.key]).filter(Boolean);
+      return barCard(q.title, `${vals.length} respuestas`, [...tally(vals)].sort((x, y) => y[1] - x[1]), vals.length, true); }).join("") + `</div>` : "";
+}
+
+function barCard(title, meta, items, total, sorted) {
+  const max = Math.max(1, ...items.map(x => x[1])), top = Math.max(...items.map(x => x[1]));
+  return `<div class="card"><h3>${esc(title)}</h3>
+    <div class="meta"><span>${esc(meta)}</span><button class="link" data-toggle>Ver tabla</button></div>
+    <div class="viz">${items.map(([name, c]) => `<div class="row${c === top && c > 0 ? " top" : ""}" data-tip="${esc(name)}: ${c} (${pct(c, total)}%)">
+      <div class="name">${esc(name)}</div><div><div class="fill" style="width:${c / max * 100}%"></div></div>
+      <div class="num">${c} · ${pct(c, total)}%</div></div>`).join("")}</div>
+    <table hidden><thead><tr><th>Opción</th><th class="n">Personas</th><th class="n">%</th></tr></thead><tbody>
+    ${items.map(([name, c]) => `<tr><td>${esc(name)}</td><td class="n">${c}</td><td class="n">${pct(c, total)}%</td></tr>`).join("")}</tbody></table></div>`;
+}
+
+/* ---------- Eventos ---------- */
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-toggle]"); if (!b) return;
+  const card = b.closest(".card"), t = card.querySelector("table"), v = card.querySelector(".viz");
+  const show = t.hidden; t.hidden = !show; v.hidden = show; b.textContent = show ? "Ver gráfica" : "Ver tabla";
+});
+const tip = $("tip");
+document.addEventListener("mousemove", e => {
+  const el = e.target.closest("[data-tip]");
+  if (!el) { tip.style.opacity = 0; return; }
+  tip.textContent = el.dataset.tip; tip.style.opacity = 1;
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px";
+  tip.style.top = (e.clientY + 14) + "px";
+});
+$("refresh").addEventListener("click", () => source ? fetchSource() : render());
+$("print").addEventListener("click", () => window.print());
+$("present").addEventListener("click", () => {
+  const on = document.body.classList.toggle("present");
+  try { on ? document.documentElement.requestFullscreen?.() : document.fullscreenElement && document.exitFullscreen(); } catch (e) {}
+});
+document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement) document.body.classList.remove("present"); });
+$("connect").addEventListener("click", () => connect($("sheetUrl").value));
+$("file").addEventListener("change", e => {
+  const f = e.target.files[0]; if (!f) return; clearInterval(timer); source = null;
+  const r = new FileReader(); r.onload = () => { setData(parseCSV(r.result)); $("notice").innerHTML = `Archivo cargado: <b>${esc(f.name)}</b>`; };
+  r.readAsText(f, "UTF-8");
+});
+$("sample").addEventListener("click", () => { clearInterval(timer); source = null; setData(parseCSV(sampleCSV()));
+  $("notice").innerHTML = "Estás viendo <b>datos de ejemplo</b>."; });
+
+function sampleCSV() {
+  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const H = ["_id", "_submission_time", "¿Qué horario prefiere para la reunión de entre semana?", "¿Qué horario prefiere para la reunión del fin de semana?"];
+  const lines = [H.map(h => `"${h}"`).join(";")];
+  for (let i = 0; i < 72; i++) {
+    const d = new Date(Date.UTC(2026, 10, 27 + Math.floor(Math.pow(rnd(), 1.8) * 9), 14 + Math.floor(rnd() * 10), Math.floor(rnd() * 60)));
+    const sem = rnd() < 0.6 ? "Miércoles 6:30 p.m. (nuevo)" : "Jueves 7:00 p.m. (actual)";
+    const fin = rnd() < (sem.includes("nuevo") ? 0.8 : 0.5) ? "Domingo 9:00 a.m. (nuevo)" : "Sábado 6:00 p.m. (actual)";
+    lines.push([i, d.toISOString().slice(0, 19), sem, fin].map(v => `"${v}"`).join(";"));
+  }
+  return lines.join("\n");
+}
+
+/* ---------- Inicio ---------- */
+if (params.has("admin")) document.querySelectorAll(".admin").forEach(el => el.hidden = false);
+if (params.has("ejemplo")) { $("sample").click(); }
+else connect(params.get("sheet") || (params.has("admin") ? (() => { try { return localStorage.getItem("sheetUrl"); } catch (e) {} })() : null) || DEFAULT_URL);
+</script>
+</body>
+</html>
