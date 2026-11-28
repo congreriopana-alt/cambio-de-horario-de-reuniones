@@ -39,6 +39,15 @@ KoboToolbox  →  Google Sheets (Apps Script, cada 10 min)  →  URL /exec  → 
 - `?ejemplo`: muestra datos de ejemplo.
 - `?admin`: muestra las herramientas ocultas, para cargar un CSV o conectar otra URL.
 
+## Diseño
+
+Estilo de app de lectura en el teléfono:
+- Fondo carbón en modo oscuro y blanco en modo claro (cambia solo según el teléfono), con acento **lila**.
+- Íconos de línea fina, filas tipo lista, pestañas arriba (computadora) y **barra de navegación abajo** (teléfono).
+- Secciones: **Resumen · Entre semana · Fin de semana · Combinaciones · Por día**. Cada una tiene su enlace, por ejemplo `#entre-semana`.
+- Nuevo = lila, actual = dorado con rayas (colores validados para daltonismo).
+- Modo presentación e impresión muestran todas las secciones juntas.
+
 ## Qué muestra
 
 - Total de respuestas y participación (si hay meta).

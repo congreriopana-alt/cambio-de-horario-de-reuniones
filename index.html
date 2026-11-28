@@ -2,179 +2,241 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Encuesta de horarios · Congregación El Río, Panajachel</title>
-<meta name="description" content="Resultados de la encuesta de cambio de horario de reuniones">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕖</text></svg>">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Encuesta de horarios · Congregación El Río</title>
+<meta name="description" content="Resultados en vivo de la encuesta de cambio de horario de reuniones de la Congregación El Río, Panajachel.">
+<meta name="theme-color" content="#1E1E1E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239575CD' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='10'/><path d='M12 6v6l4 2'/></svg>">
 <style>
-  /* =============== Colores (claro / oscuro) =============== */
+/* =====================================================================
+   Estilo de app de lectura: fondo carbón, acento lila, íconos de línea fina,
+   filas tipo lista, pestañas arriba y navegación inferior en el teléfono.
+   Paleta validada (CVD ΔE ≥ 24, contraste ≥ 4.5:1 en texto).
+   ===================================================================== */
+:root {
+  color-scheme: light dark;
+  --font: Roboto, "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  /* Claro */
+  --bg: #FFFFFF; --row: #F4F3F7; --sep: #FFFFFF; --bar-bg: #FFFFFF; --nav-bg: #F7F6FA;
+  --text: #1E1E1E; --text-2: #5F5F66; --line: #DCDAE3;
+  --accent: #6A4BB8; --accent-soft: #EDE8F8;
+  --nuevo: #6A4BB8; --on-nuevo: #FFFFFF; --actual: #A16207; --on-actual: #FFFFFF;
+  --ok: #1B5E20; --ok-bg: #E3F2E5; --warn: #7A4A00; --warn-bg: #FCF0DC;
+}
+@media (prefers-color-scheme: dark) {
   :root {
-    --surface-0: #f6f6f4; --surface-1: #ffffff; --border: #e4e4e0;
-    --text-primary: #191919; --text-secondary: #666666;
-    --nuevo: #257de0; --actual: #f47230;          /* paleta validada, slots 1 y 2 */
-    --bar: #257de0; --bar-top: #1b64be; --track: #efefef; --accent-bg: #eaf3fd;
-    --ok-bg: #e7f6ea; --warn-bg: #fdf1e4;
+    --bg: #1E1E1E; --row: #2A2A2A; --sep: #121212; --bar-bg: #1E1E1E; --nav-bg: #2A2A2A;
+    --text: #F2F2F2; --text-2: #B0B0B0; --line: #3A3A3A;
+    --accent: #B39DDB; --accent-soft: #352E45;
+    --nuevo: #9575CD; --on-nuevo: #161616; --actual: #C08A1E; --on-actual: #161616;
+    --ok: #A5D6A7; --ok-bg: #1F3322; --warn: #FFD18A; --warn-bg: #3A2C14;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --surface-0: #111111; --surface-1: #191919; --border: #2e2e2e;
-      --text-primary: #efefef; --text-secondary: #9c9c9c;
-      --nuevo: #338ced; --actual: #e76624;
-      --bar: #338ced; --bar-top: #6aabf1; --track: #2a2a2a; --accent-bg: #16263a;
-      --ok-bg: #13301a; --warn-bg: #3a2614;
-    }
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--surface-0); color: var(--text-primary);
-         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
-  header.wrap { padding-top: 28px; display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
-  header .titles { flex: 1; min-width: 240px; }
-  h1 { font-size: 24px; margin: 0 0 2px; letter-spacing: -0.01em; }
-  .sub { color: var(--text-secondary); margin: 0; }
-  .actions { display: flex; gap: 8px; }
-  .btn { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font: inherit; font-size: 14px;
-         background: var(--surface-1); color: var(--text-primary); border: 1px solid var(--border);
-         border-radius: 8px; padding: 7px 12px; }
-  .btn:hover { background: var(--track); }
-  .btn.primary { background: var(--bar); color: #fff; border-color: transparent; font-weight: 600; }
-  main.wrap { padding-bottom: 48px; }
+}
 
-  .notice { background: var(--accent-bg); border-radius: 10px; padding: 9px 14px; font-size: 14px; margin: 16px 0; }
-  .notice[hidden], .admin[hidden] { display: none !important; }
-  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--surface-1);
-             border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-top: 16px; }
-  .toolbar input[type=url] { flex: 1; min-width: 240px; font: inherit; padding: 7px 10px; border-radius: 8px;
-             border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary); }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--text); font: 400 17px/1.45 var(--font); font-variant-numeric: tabular-nums;
+       -webkit-tap-highlight-color: transparent; padding-bottom: env(safe-area-inset-bottom); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 12px; top: -60px; z-index: 60; background: var(--accent); color: var(--bg); padding: 10px 14px; border-radius: 6px; font-weight: 600; text-decoration: none; }
+.skip:focus { top: 12px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+svg.i { width: 26px; height: 26px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.shell { max-width: 960px; margin: 0 auto; }
 
-  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-bottom: 16px; }
-  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
-  .kpi .label { font-size: 13px; color: var(--text-secondary); }
-  .kpi .value { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.2; }
-  .kpi .note { font-size: 13px; color: var(--text-secondary); }
-  .progress { height: 8px; background: var(--track); border-radius: 4px; margin: 8px 0 4px; overflow: hidden; }
-  .progress > div { height: 100%; background: var(--bar); border-radius: 0 4px 4px 0; transition: width .5s ease; }
+/* ---------- Barra superior ---------- */
+.appbar { position: sticky; top: 0; z-index: 30; background: var(--bar-bg); }
+.titlebar { display: flex; align-items: center; gap: 8px; padding: 18px 14px 10px; }
+.titlebar .t { flex: 1; min-width: 0; }
+h1 { font-size: 30px; font-weight: 700; margin: 0; line-height: 1.1; letter-spacing: -.01em; }
+.titlebar .s { color: var(--text-2); font-size: 18px; margin: 4px 0 0; }
+.ibtn { width: 52px; height: 52px; display: grid; place-items: center; border: 0; background: none; color: var(--accent);
+        border-radius: 50%; cursor: pointer; transition: background 150ms; }
+.ibtn svg.i { width: 30px; height: 30px; }
+.ibtn:hover { background: var(--accent-soft); }
+.ibtn.spin svg.i { animation: spin 900ms linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  h2.section { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-secondary);
-               margin: 26px 0 10px; font-weight: 600; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 16px; }
-  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .wrap { padding: 0 14px; } }
-  .card h3 { font-size: 16px; margin: 0 0 2px; }
-  .card .meta { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; display: flex; justify-content: space-between; gap: 8px; }
-  .link { white-space: nowrap; background: none; border: 0; color: var(--bar); cursor: pointer; font: inherit; font-size: 13px; padding: 0; }
+.tabs { display: flex; overflow-x: auto; scrollbar-width: none; background: var(--row); border-bottom: 1px solid var(--line); }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { flex: none; border: 0; background: none; color: var(--text); font: 500 17px var(--font); text-transform: uppercase; letter-spacing: .02em;
+       padding: 0 22px; min-height: 56px; cursor: pointer; position: relative; white-space: nowrap; }
+.tab[aria-selected="true"] { color: var(--accent); font-weight: 700; }
+.tab[aria-selected="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 4px; background: var(--accent); border-radius: 2px 2px 0 0; }
 
-  /* ---- Resultado principal ---- */
-  .verdict { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; margin: 6px 0 2px; line-height: 1.25; }
-  .verdict small { display: block; font-size: 14px; font-weight: 500; color: var(--text-secondary); margin-top: 2px; }
-  .split { display: flex; height: 40px; margin: 16px 0 10px; gap: 2px; }
-  .split .seg { height: 100%; display: flex; align-items: center; padding: 0 10px; color: #fff; font-weight: 700;
-                font-size: 15px; white-space: nowrap; overflow: hidden; min-width: 0; transition: flex-grow .5s ease; cursor: default; }
-  .split .seg:first-child { border-radius: 6px 0 0 6px; }
-  .split .seg:last-child  { border-radius: 0 6px 6px 0; justify-content: flex-end; }
-  .split .seg:only-child  { border-radius: 6px; }
-  .seg.nuevo { background: var(--nuevo); } .seg.actual { background: var(--actual); }
-  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; }
-  .legend span { display: inline-flex; align-items: center; gap: 7px; }
-  .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
-  .legend b { font-variant-numeric: tabular-nums; }
-  .pill { display: inline-block; font-size: 12px; font-weight: 600; border-radius: 999px; padding: 2px 9px; margin-top: 10px; }
-  .pill.ok { background: var(--ok-bg); } .pill.warn { background: var(--warn-bg); }
+/* ---------- Estado ---------- */
+.status { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 14px; color: var(--text-2); border-bottom: 6px solid var(--sep); background: var(--row); }
+.status .dot { width: 9px; height: 9px; border-radius: 50%; background: #43A047; flex: none; }
+.status.err .dot { background: #E53935; } .status.wait .dot { background: var(--actual); }
+.status b { color: var(--text); }
 
-  /* ---- Barras horizontales ---- */
-  .row { display: grid; grid-template-columns: minmax(120px, 40%) 1fr auto; gap: 10px; align-items: center; padding: 5px 4px; }
-  .row:hover { background: var(--track); border-radius: 6px; }
-  .row .name { font-size: 14px; overflow-wrap: anywhere; }
-  .row .fill { height: 14px; background: var(--bar); border-radius: 0 4px 4px 0; min-width: 2px; transition: width .5s ease; }
-  .row.top .fill { background: var(--bar-top); } .row.top .name { font-weight: 600; }
-  .row .num { font-size: 13px; color: var(--text-secondary); font-variant-numeric: tabular-nums; min-width: 78px; text-align: right; }
+/* ---------- Filas tipo lista ---------- */
+.list { display: grid; gap: 6px; background: var(--sep); }
+.item { display: flex; align-items: center; gap: 0; background: var(--row); min-height: 104px; padding: 14px 16px 14px 0; width: 100%;
+        border: 0; color: inherit; font: inherit; text-align: left; }
+button.item { cursor: pointer; transition: background 150ms; }
+button.item:hover { background: var(--accent-soft); }
+.item .ic { width: 96px; display: grid; place-items: center; color: var(--text); flex: none; }
+.item .ic svg.i { width: 44px; height: 44px; stroke-width: 1.3; }
+.item .body { flex: 1; min-width: 0; }
+.item .lbl { font-size: 19px; margin: 0; }
+.item .val { font-size: 15px; color: var(--text-2); margin: 2px 0 0; }
+.item .num { font-size: 30px; font-weight: 700; margin-left: 12px; color: var(--accent); white-space: nowrap; }
+.item .chev { color: var(--text-2); margin-left: 6px; }
+.item .chev svg.i { width: 22px; height: 22px; }
+.mini { display: flex; height: 10px; gap: 2px; margin-top: 10px; max-width: 360px; }
+.mini span { height: 100%; } .mini span:first-child { border-radius: 5px 0 0 5px; } .mini span:last-child { border-radius: 0 5px 5px 0; } .mini span:only-child { border-radius: 5px; }
+.progress { height: 8px; background: var(--line); border-radius: 4px; margin-top: 10px; max-width: 360px; overflow: hidden; }
+.progress span { display: block; height: 100%; background: var(--accent); border-radius: 4px; transition: width 600ms ease; }
 
-  /* ---- Respuestas por día ---- */
-  .days { display: flex; align-items: flex-end; gap: 2px; height: 150px; border-bottom: 1px solid var(--border); padding-top: 18px; }
-  .day { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; min-width: 0; cursor: default; }
-  .day .v { font-size: 12px; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
-  .day .b { width: 100%; max-width: 44px; background: var(--bar); border-radius: 4px 4px 0 0; min-height: 2px; transition: height .5s ease; }
-  .day:hover .b { background: var(--bar-top); }
-  .daylabels { display: flex; gap: 2px; font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
-  .daylabels span { flex: 1; text-align: center; min-width: 0; overflow: visible; white-space: nowrap; }
+/* ---------- Paneles de detalle ---------- */
+.panel { background: var(--sep); }
+.block { background: var(--row); padding: 22px 18px; margin-bottom: 6px; }
+.block h2 { font-size: 15px; font-weight: 500; text-transform: uppercase; letter-spacing: .04em; color: var(--text-2); margin: 0 0 4px; }
+.block .sub { color: var(--text-2); font-size: 15px; margin: 0; }
+.big { font-size: 64px; font-weight: 700; line-height: 1; margin: 18px 0 6px; color: var(--accent); letter-spacing: -.02em; }
+.what { font-size: 20px; font-weight: 500; margin: 0; } .opt { color: var(--text-2); margin: 2px 0 0; }
+.split { display: flex; height: 52px; gap: 3px; margin: 22px 0 14px; }
+.seg { display: flex; align-items: center; padding: 0 12px; font-weight: 700; font-size: 19px; overflow: hidden; white-space: nowrap; min-width: 0; transition: flex-grow 600ms ease; }
+.seg:first-child { border-radius: 8px 0 0 8px; } .seg:last-child { border-radius: 0 8px 8px 0; justify-content: flex-end; } .seg:only-child { border-radius: 8px; }
+.seg.nuevo { background: var(--nuevo); color: var(--on-nuevo); }
+.seg.actual { background: var(--actual); color: var(--on-actual); background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.16) 0 6px, transparent 6px 12px); }
+.seg.none { background: var(--line); flex-grow: 1; }
+.legend { display: grid; gap: 0; }
+.legend div { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 17px; }
+.legend i { width: 16px; height: 16px; border-radius: 4px; flex: none; }
+.legend .t { color: var(--text-2); }
+.legend .n { margin-left: auto; font-weight: 700; font-size: 20px; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font-size: 15px; font-weight: 600; margin-top: 12px; }
+.badge svg.i { width: 18px; height: 18px; stroke-width: 2; }
+.badge.ok { background: var(--ok-bg); color: var(--ok); } .badge.warn { background: var(--warn-bg); color: var(--warn); }
 
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--border); }
-  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.row { display: grid; grid-template-columns: minmax(120px, 42%) 1fr auto; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); }
+.row .name { font-size: 17px; } .row.top .name { font-weight: 700; }
+.row .track { height: 12px; background: var(--line); border-radius: 6px; overflow: hidden; }
+.row .fill { height: 100%; background: var(--accent); border-radius: 6px; transition: width 600ms ease; }
+.row .n { font-size: 15px; color: var(--text-2); min-width: 72px; text-align: right; } .row .n b { color: var(--text); font-size: 17px; }
 
-  #tip { position: fixed; pointer-events: none; background: var(--text-primary); color: var(--surface-1);
-         padding: 6px 10px; border-radius: 6px; font-size: 13px; opacity: 0; transition: opacity .1s; z-index: 10; }
-  footer { color: var(--text-secondary); font-size: 13px; margin-top: 28px; }
-  .empty { color: var(--text-secondary); padding: 30px 0; text-align: center; }
+.days { display: flex; align-items: flex-end; gap: 4px; height: 200px; margin-top: 26px; border-bottom: 1px solid var(--line); }
+.day { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+.day .v { font-size: 13px; color: var(--text-2); }
+.day .b { width: 100%; max-width: 46px; background: var(--accent); border-radius: 5px 5px 0 0; min-height: 3px; transition: height 600ms ease; }
+.daylabels { display: flex; gap: 4px; margin-top: 6px; font-size: 12px; color: var(--text-2); }
+.daylabels span { flex: 1; min-width: 0; text-align: center; white-space: nowrap; }
 
-  /* ---- Modo presentación ---- */
-  body.present { font-size: 18px; }
-  body.present .wrap { max-width: 1500px; }
-  body.present h1 { font-size: 36px; }
-  body.present .verdict { font-size: 32px; }
-  body.present .split { height: 60px; } body.present .split .seg { font-size: 20px; }
-  body.present .kpi .value { font-size: 44px; }
-  body.present footer, body.present .notice { display: none; }
+.tlink { background: none; border: 0; color: var(--accent); font: 600 15px var(--font); text-transform: uppercase; cursor: pointer; min-height: 44px; padding: 0; margin-top: 10px; }
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 16px; }
+th, td { padding: 10px 0; border-top: 1px solid var(--line); text-align: left; } th { color: var(--text-2); font-weight: 500; } .r { text-align: right; }
+.empty { background: var(--row); padding: 40px 18px; text-align: center; color: var(--text-2); }
+footer { color: var(--text-2); font-size: 13px; padding: 18px 16px 24px; text-align: center; }
 
-  @media print {
-    .actions, .admin, .link { display: none !important; }
-    body { background: #fff; } .card { break-inside: avoid; }
-  }
+/* ---------- Navegación inferior (teléfono) ---------- */
+.bottomnav { display: none; }
+@media (max-width: 720px) {
+  .tabs { display: none; }
+  .bottomnav { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: var(--nav-bg);
+               border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+  .bottomnav button { flex: 1; min-height: 68px; border: 0; background: none; color: var(--text); font: 400 12.5px var(--font);
+                      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; }
+  .bottomnav button svg.i { width: 28px; height: 28px; }
+  .bottomnav button[aria-current="page"] { color: var(--accent); font-weight: 700; }
+  main { padding-bottom: 84px; }
+  .titlebar { padding-top: 14px; } h1 { font-size: 26px; } .titlebar .s { font-size: 16px; }
+  .ibtn { width: 46px; height: 46px; } .ibtn svg.i { width: 27px; height: 27px; }
+  .item .ic { width: 78px; } .item .ic svg.i { width: 38px; height: 38px; }
+}
+
+/* ---------- Herramientas ocultas (?admin) ---------- */
+.admin[hidden] { display: none !important; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; background: var(--row); border-bottom: 6px solid var(--sep); }
+.toolbar .tb { min-height: 44px; padding: 0 14px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: 500 14px var(--font); cursor: pointer; display: inline-flex; align-items: center; }
+.toolbar input[type=url] { flex: 1; min-width: 220px; min-height: 44px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: 15px var(--font); }
+
+/* ---------- Presentación e impresión: todo a la vista ---------- */
+body.present .panel, body.printing .panel { display: block !important; }
+body.present .tabs, body.present .bottomnav, body.present .status, body.present footer { display: none !important; }
+body.present { font-size: 20px; } body.present .shell { max-width: 1400px; }
+body.present .big { font-size: 96px; } body.present .split { height: 72px; } body.present .seg { font-size: 26px; }
+body.present .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--sep); }
+body.present #p-resumen { grid-column: 1 / -1; }
+@media print {
+  .panel { display: block !important; } .tabs, .bottomnav, .ibtn, .tlink, .admin, .skip { display: none !important; }
+  .appbar { position: static; } main { padding-bottom: 0; } .block, .item { break-inside: avoid; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
-<header class="wrap">
-  <div class="titles">
-    <h1>Encuesta de cambio de horario de reuniones</h1>
-    <p class="sub">Congregación El Río · Panajachel, Sololá</p>
-  </div>
-  <div class="actions">
-    <button class="btn" id="refresh" title="Traer las respuestas más recientes">↻ Actualizar</button>
-    <button class="btn" id="present" title="Pantalla completa con letra grande">⛶ Presentar</button>
-    <button class="btn" id="print" title="Imprimir o guardar como PDF">🖨️</button>
+<a class="skip" href="#contenido">Saltar a los resultados</a>
+
+<!-- Íconos de línea (Lucide) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></symbol>
+  <symbol id="i-max" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16v-4M12 16V8M17 16v-7"/></symbol>
+  <symbol id="i-check2" viewBox="0 0 24 24"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+</svg>
+
+<header class="appbar">
+  <div class="shell">
+    <div class="titlebar">
+      <div class="t"><h1>Encuesta de horarios</h1><p class="s">Congregación El Río</p></div>
+      <button class="ibtn" id="refresh" type="button" aria-label="Actualizar resultados" title="Actualizar"><svg class="i" aria-hidden="true"><use href="#i-refresh"/></svg></button>
+      <button class="ibtn" id="present" type="button" aria-label="Modo presentación" aria-pressed="false" title="Presentar"><svg class="i" aria-hidden="true"><use href="#i-max"/></svg></button>
+      <button class="ibtn" id="print" type="button" aria-label="Imprimir o guardar como PDF" title="Imprimir"><svg class="i" aria-hidden="true"><use href="#i-print"/></svg></button>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Secciones" id="tabs"></nav>
   </div>
 </header>
 
-<main class="wrap">
-  <!-- Herramientas ocultas: se ven agregando ?admin a la dirección -->
+<main id="contenido" class="shell" tabindex="-1">
   <div class="toolbar admin" hidden>
-    <label class="btn primary" for="file">📂 Cargar CSV</label>
-    <input id="file" type="file" accept=".csv,.txt" hidden>
-    <button class="btn" id="sample">Datos de ejemplo</button>
-    <input id="sheetUrl" type="url" placeholder="URL /exec de Apps Script o enlace de Google Sheets">
-    <button class="btn primary" id="connect">🔗 Conectar</button>
+    <label class="tb" for="file">Cargar CSV</label><input id="file" type="file" accept=".csv,.txt" class="sr-only">
+    <button class="tb" id="sample" type="button">Datos de ejemplo</button>
+    <label for="sheetUrl" class="sr-only">URL de datos</label>
+    <input id="sheetUrl" type="url" placeholder="URL /exec o enlace de Google Sheets">
+    <button class="tb" id="connect" type="button">Conectar</button>
   </div>
-
-  <div class="notice" id="notice">⏳ Conectando con los resultados de la encuesta…</div>
-
-  <section class="kpis" id="kpis"></section>
-
-  <h2 class="section">Resultado</h2>
-  <section class="grid" id="results"></section>
-
-  <h2 class="section" id="crossTitle">Las dos reuniones juntas</h2>
-  <section class="grid" id="detail"></section>
-
-  <section id="others"></section>
-
-  <footer>Se actualiza solo cada 5 minutos · Los datos se procesan en este navegador.</footer>
+  <div class="status wait" id="status" role="status" aria-live="polite"><span class="dot" aria-hidden="true"></span><span id="statusText">Conectando con los resultados…</span></div>
+  <div class="panels" id="panels"></div>
+  <footer>Respuestas anónimas · se actualiza cada 5 minutos</footer>
 </main>
-<div id="tip"></div>
+
+<nav class="bottomnav" id="bottomnav" aria-label="Secciones"></nav>
 
 <script>
 /* ================== CONFIGURACIÓN ================== */
-// URL de la aplicación web de Apps Script (termina en /exec)
 const DEFAULT_URL = "https://script.google.com/macros/s/AKfycbxzJY-DWVcMRQLRG1DcUtHl66mNRvz9dn_1P7WeVBRvf31FngK39Efgrqfm5HDRLvp3/exec";
-// Cuántas personas se espera que respondan (publicadores y asistentes).
-// Déjalo en 0 para no mostrar el porcentaje de participación. También se puede poner en la dirección: ?meta=80
-const META_RESPUESTAS = 0;
+const META_RESPUESTAS = 0;   // personas esperadas (0 = no mostrar). También: ?meta=80
 const REFRESH_MIN = 5;
 /* =================================================== */
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const pct = (n, d) => d ? Math.round(n / d * 100) : 0;
+const icon = id => `<svg class="i" aria-hidden="true"><use href="#i-${id}"/></svg>`;
 const params = new URLSearchParams(location.search);
 const META = parseInt(params.get("meta")) || META_RESPUESTAS;
+
+const SECTIONS = [
+  { id: "resumen", label: "Resumen", icon: "home" },
+  { id: "entre-semana", label: "Entre semana", icon: "cal" },
+  { id: "fin-de-semana", label: "Fin de semana", icon: "sun" },
+  { id: "combinaciones", label: "Combinaciones", icon: "layers" },
+  { id: "por-dia", label: "Por día", icon: "chart" },
+];
 
 /* ---------- CSV ---------- */
 function parseCSV(text) {
@@ -188,8 +250,7 @@ function parseCSV(text) {
     if (q) { if (c === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else q = false; } else field += c; }
     else if (c === '"') q = true;
     else if (c === d) { row.push(field); field = ""; }
-    else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(field); field = "";
-      if (row.some(v => v.trim() !== "")) rows.push(row); row = []; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(field); field = ""; if (row.some(v => v.trim() !== "")) rows.push(row); row = []; }
     else field += c;
   }
   row.push(field); if (row.some(v => v.trim() !== "")) rows.push(row);
@@ -201,223 +262,213 @@ function parseCSV(text) {
 const IGNORE = /^_|marca temporal|timestamp|^start$|^end$|^today$|deviceid|uuid|__version__|instanceid|^meta/i;
 const pretty = h => h.includes("/") ? h.split("/").pop() : h;
 const kindOf = v => /\(nuevo\)/i.test(v) ? "nuevo" : /\(actual\)/i.test(v) ? "actual" : null;
-const cleanOpt = v => v.replace(/\s*\((nuevo|actual)\)\s*/i, "");
-const shortQ = t => /entre semana/i.test(t) ? "Entre semana" : /fin de semana/i.test(t) ? "Fin de semana" : t;
-
-function tally(arr) { const m = new Map(); arr.forEach(v => m.set(v, (m.get(v) || 0) + 1)); return m; }
-
+const cleanOpt = v => (v || "").replace(/\s*\((nuevo|actual)\)\s*/i, "");
+const tally = arr => { const m = new Map(); arr.forEach(v => m.set(v, (m.get(v) || 0) + 1)); return m; };
 function analyze(headers, data) {
-  const vs = [], other = [];
+  const vs = [];
   headers.forEach(h => {
     if (IGNORE.test(h) || IGNORE.test(pretty(h))) return;
-    const vals = data.map(r => r[h]).filter(Boolean);
-    if (!vals.length) return;
-    const distinct = [...new Set(vals)];
-    if (distinct.length <= 4 && distinct.every(kindOf)) vs.push({ key: h, title: pretty(h) });
-    else if (distinct.length <= 15) other.push({ key: h, title: pretty(h) });
+    const distinct = [...new Set(data.map(r => r[h]).filter(Boolean))];
+    if (distinct.length && distinct.length <= 4 && distinct.every(kindOf)) vs.push({ key: h, title: pretty(h) });
   });
+  const semana = vs.find(q => /entre semana/i.test(q.title)) || vs[0];
+  const finde = vs.find(q => /fin de semana/i.test(q.title)) || vs.find(q => q !== semana);
   const timeCol = headers.find(h => /_submission_time/i.test(h)) || headers.find(h => /marca temporal|timestamp|^end$|^start$/i.test(h));
-  return { vs, other, timeCol };
+  return { semana, finde, timeCol };
 }
-
 function parseDate(v) {
   if (!v) return null;
-  let m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);       // dd/mm/aaaa (Google Forms)
+  const m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
   if (m) return new Date(+m[3], +m[2] - 1, +m[1], +(m[4] || 0), +(m[5] || 0));
-  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/.test(v)) v += "Z";           // Kobo _submission_time = UTC
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/.test(v)) v += "Z";
   const d = new Date(v); return isNaN(d) ? null : d;
 }
+function meetingStats(q) {
+  const vals = q ? state.data.map(r => r[q.key]).filter(Boolean) : [], tot = vals.length, m = tally(vals);
+  const optN = [...m.keys()].find(v => kindOf(v) === "nuevo") || "", optA = [...m.keys()].find(v => kindOf(v) === "actual") || "";
+  const nN = m.get(optN) || 0, nA = m.get(optA) || 0, pN = pct(nN, tot);
+  return { tot, optN, optA, nN, nA, pN, pA: tot ? 100 - pN : 0 };
+}
 
-/* ---------- Estado y carga ---------- */
-let state = { headers: [], data: [], a: { vs: [], other: [] } }, source = null, timer = null, koboTime = "";
-
-function setData({ headers, data }) { state = { headers, data, a: analyze(headers, data) }; render(); }
-
+/* ---------- Estado y conexión ---------- */
+let state = { data: [], a: {} }, source = null, timer = null;
+let current = SECTIONS.some(s => "#" + s.id === location.hash) ? location.hash.slice(1) : "resumen";
+const setData = ({ headers, data }) => { state = { data, a: analyze(headers, data) }; render(); };
+function setStatus(kind, html) { $("status").className = "status " + kind; $("statusText").innerHTML = html; }
 function toCsvUrl(u) {
   if (/\/spreadsheets\/d\/e\//.test(u)) return u.includes("output=csv") ? u : u.replace(/\/pub(html)?(\?.*)?$/, "/pub") + "?output=csv";
   const m = u.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
   if (m) return `https://docs.google.com/spreadsheets/d/${m[1]}/gviz/tq?tqx=out:csv&gid=${(u.match(/[#&?]gid=(\d+)/) || [])[1] || "0"}`;
   return u;
 }
-
 async function fetchSource(quiet) {
   if (!source) return;
-  const btn = $("refresh"); btn.disabled = true; btn.textContent = "↻ Actualizando…";
+  const btn = $("refresh"); btn.disabled = true; btn.classList.add("spin");
   try {
-    const isScript = /script\.google(usercontent)?\.com/.test(source);
-    const src = isScript ? source : toCsvUrl(source);
+    const isScript = /script\.google(usercontent)?\.com/.test(source), src = isScript ? source : toCsvUrl(source);
     const res = await fetch(src + (src.includes("?") ? "&" : "?") + "t=" + Date.now());
     if (!res.ok) throw new Error("HTTP " + res.status);
     const text = await res.text();
     if (/^\s*<!DOCTYPE|<html/i.test(text)) throw new Error(isScript ? "la aplicación web no tiene acceso para “Cualquier usuario”" : "la hoja no es pública");
+    let kobo = "";
     if (isScript) {
       const json = JSON.parse(text), rows = Array.isArray(json) ? json : (json.datos || []);
-      koboTime = json.actualizado || "";
-      const headers = rows.length ? Object.keys(rows[0]) : [];
+      kobo = json.actualizado || ""; const headers = rows.length ? Object.keys(rows[0]) : [];
       setData({ headers, data: rows.map(r => Object.fromEntries(headers.map(h => [h, String(r[h] ?? "").trim()]))) });
-    } else { koboTime = ""; setData(parseCSV(text)); }
+    } else setData(parseCSV(text));
     const fmt = d => new Date(d).toLocaleString("es-GT", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
-    $("notice").hidden = false;
-    $("notice").innerHTML = `🟢 En vivo · revisado ${fmt(Date.now())}` + (koboTime ? ` · datos traídos de Kobo: ${fmt(koboTime)}` : "");
+    setStatus("ok", `<b>En vivo</b> · ${state.data.length} respuestas · revisado ${fmt(Date.now())}${kobo ? ` · Kobo: ${fmt(kobo)}` : ""}`);
   } catch (err) {
-    if (!quiet || !state.data.length) {
-      $("notice").hidden = false;
-      $("notice").innerHTML = `⚠️ No se pudieron leer los resultados (${esc(err.message)}). Intenta con ↻ Actualizar en un momento.`;
-    }
-  } finally { btn.disabled = false; btn.textContent = "↻ Actualizar"; }
+    if (!quiet || !state.data.length) setStatus("err", `No se pudieron leer los resultados (${esc(err.message)}). Toca actualizar en un momento.`);
+  } finally { btn.disabled = false; btn.classList.remove("spin"); }
+}
+function connect(u) {
+  source = (u || "").trim(); if (!source) return; $("sheetUrl").value = source;
+  try { localStorage.setItem("sheetUrl", source); } catch (e) {}
+  clearInterval(timer); fetchSource(); timer = setInterval(() => fetchSource(true), REFRESH_MIN * 60 * 1000);
 }
 
-function connect(u) {
-  source = (u || "").trim(); if (!source) return;
-  $("sheetUrl").value = source;
-  try { localStorage.setItem("sheetUrl", source); } catch (e) {}
-  clearInterval(timer); fetchSource();
-  timer = setInterval(() => fetchSource(true), REFRESH_MIN * 60 * 1000);
+/* ---------- Navegación ---------- */
+function buildNav() {
+  $("tabs").innerHTML = SECTIONS.map(s => `<button class="tab" role="tab" id="t-${s.id}" aria-controls="p-${s.id}" data-go="${s.id}">${s.label}</button>`).join("");
+  $("bottomnav").innerHTML = SECTIONS.map(s => `<button type="button" data-go="${s.id}">${icon(s.icon)}<span>${s.label}</span></button>`).join("");
 }
+function go(id, push = true) {
+  current = id;
+  document.querySelectorAll("[data-go]").forEach(b => {
+    const on = b.dataset.go === id;
+    if (b.classList.contains("tab")) { b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; if (on) b.scrollIntoView({ block: "nearest", inline: "nearest" }); }
+    else on ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current");
+  });
+  document.querySelectorAll(".panel").forEach(p => p.hidden = p.id !== "p-" + id);
+  if (push && location.hash !== "#" + id) history.replaceState(null, "", "#" + id + "");
+  if (push) window.scrollTo({ top: 0 });
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go); });
+$("tabs").addEventListener("keydown", e => {
+  if (!["ArrowRight", "ArrowLeft"].includes(e.key)) return;
+  const i = SECTIONS.findIndex(s => s.id === current), n = SECTIONS[(i + (e.key === "ArrowRight" ? 1 : -1) + SECTIONS.length) % SECTIONS.length];
+  go(n.id); $("t-" + n.id).focus();
+});
+addEventListener("hashchange", () => { const id = location.hash.slice(1); if (SECTIONS.some(s => s.id === id)) go(id, false); });
 
 /* ---------- Render ---------- */
+const panel = (id, html) => `<section class="panel" id="p-${id}" role="tabpanel" aria-labelledby="t-${id}">${html}</section>`;
+
+function meetingBlock(name, q) {
+  const s = meetingStats(q);
+  if (!s.tot) return `<div class="empty">Aún no hay respuestas para ${name.toLowerCase()}.</div>`;
+  const winN = s.nN > s.nA, tie = s.nN === s.nA;
+  const big = tie ? "50%" : (winN ? s.pN : s.pA) + "%";
+  const what = tie ? "Empate" : `prefiere el horario ${winN ? "nuevo" : "actual"}`;
+  const opt = tie ? "" : cleanOpt(winN ? s.optN : s.optA);
+  const badge = tie ? `<span class="badge warn">${icon("alert")}Empate: ${s.nN} y ${s.nA} votos</span>`
+    : Math.abs(s.pN - s.pA) < 10 ? `<span class="badge warn">${icon("alert")}Diferencia pequeña: ${Math.abs(s.nN - s.nA)} votos</span>`
+    : `<span class="badge ok">${icon("check")}Ventaja clara</span>`;
+  const seg = (cls, c, p, o, lbl) => c ? `<div class="seg ${cls}" style="flex-grow:${c}" role="img" aria-label="${lbl}, ${esc(cleanOpt(o))}: ${c} votos, ${p}%">${p >= 12 ? p + "%" : ""}</div>` : "";
+  return `<div class="block"><h2>${esc(name)}</h2><p class="sub">${s.tot} respuestas</p>
+    <p class="big">${big}</p><p class="what">${esc(what)}</p>${opt ? `<p class="opt">${esc(opt)}</p>` : ""}
+    <div class="split">${seg("nuevo", s.nN, s.pN, s.optN, "Nuevo") + seg("actual", s.nA, s.pA, s.optA, "Actual")}</div>
+    <div class="legend">
+      <div><i style="background:var(--nuevo)"></i><span><b>Nuevo</b> <span class="t">· ${esc(cleanOpt(s.optN) || "—")}</span></span><span class="n">${s.nN}</span></div>
+      <div><i style="background:var(--actual);background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.3) 0 3px,transparent 3px 6px)"></i><span><b>Actual</b> <span class="t">· ${esc(cleanOpt(s.optA) || "—")}</span></span><span class="n">${s.nA}</span></div>
+    </div>${badge}</div>`;
+}
+
 function render() {
   const { data, a } = state, n = data.length;
+  const S = meetingStats(a.semana), F = meetingStats(a.finde);
+  const mini = s => s.tot ? `<div class="mini" aria-hidden="true">${s.nN ? `<span style="flex-grow:${s.nN};background:var(--nuevo)"></span>` : ""}${s.nA ? `<span style="flex-grow:${s.nA};background:var(--actual)"></span>` : ""}</div>` : "";
+  const lead = s => !s.tot ? "Sin respuestas" : s.nN === s.nA ? "Empate" : s.nN > s.nA ? `${s.pN}% nuevo · ${esc(cleanOpt(s.optN))}` : `${s.pA}% actual · ${esc(cleanOpt(s.optA))}`;
 
-  // --- KPIs ---
-  let k = `<div class="card kpi"><div class="label">Respuestas</div><div class="value">${n}</div>`;
-  if (META > 0) k += `<div class="progress"><div style="width:${Math.min(100, pct(n, META))}%"></div></div>
-      <div class="note">${pct(n, META)}% de participación · meta ${META} personas</div>`;
-  else k += `<div class="note">personas que respondieron</div>`;
-  k += `</div>`;
+  /* Resumen */
+  let last = "";
   if (a.timeCol) {
-    const dates = data.map(r => parseDate(r[a.timeCol])).filter(Boolean).sort((x, y) => y - x);
-    if (dates.length) {
-      const last = dates[0], mins = Math.round((Date.now() - last) / 60000);
-      const rel = mins < 0 ? "reciente" : mins < 1 ? "hace un momento" : mins < 60 ? `hace ${mins} min` : mins < 1440 ? `hace ${Math.round(mins / 60)} h` : `hace ${Math.round(mins / 1440)} días`;
-      k += `<div class="card kpi"><div class="label">Última respuesta</div><div class="value" style="font-size:24px">${rel}</div>
-        <div class="note">${last.toLocaleString("es-GT", { weekday: "long", day: "numeric", month: "long", hour: "numeric", minute: "2-digit" })}</div></div>`;
-    }
+    const d = data.map(r => parseDate(r[a.timeCol])).filter(Boolean).sort((x, y) => y - x)[0];
+    if (d) { const mins = Math.round((Date.now() - d) / 60000);
+      last = mins < 0 ? "reciente" : mins < 1 ? "hace un momento" : mins < 60 ? `hace ${mins} min` : mins < 1440 ? `hace ${Math.round(mins / 60)} h` : `hace ${Math.round(mins / 1440)} días`;
+      last = `<div class="item"><div class="ic">${icon("inbox")}</div><div class="body"><p class="lbl">Última respuesta</p>
+        <p class="val">${last} · ${esc(d.toLocaleString("es-GT", { weekday: "long", day: "numeric", month: "long", hour: "numeric", minute: "2-digit" }))}</p></div></div>`; }
   }
-  if (a.vs.length >= 2) {
-    const both = data.filter(r => a.vs.every(q => kindOf(r[q.key]) === "nuevo")).length;
-    const answered = data.filter(r => a.vs.every(q => r[q.key])).length;
-    k += `<div class="card kpi"><div class="label">Quieren los dos horarios nuevos</div>
-      <div class="value">${pct(both, answered)}%</div><div class="note">${both} de ${answered} personas</div></div>`;
-  }
-  $("kpis").innerHTML = k;
+  const both = a.semana && a.finde ? data.filter(r => r[a.semana.key] && r[a.finde.key]) : [];
+  const bothNew = both.filter(r => kindOf(r[a.semana.key]) === "nuevo" && kindOf(r[a.finde.key]) === "nuevo").length;
+  const resumen = `<div class="list">
+    <div class="item"><div class="ic">${icon("users")}</div><div class="body"><p class="lbl">Respuestas recibidas</p>
+      ${META > 0 ? `<div class="progress" role="progressbar" aria-label="Participación" aria-valuemin="0" aria-valuemax="${META}" aria-valuenow="${n}"><span style="width:${Math.min(100, pct(n, META))}%"></span></div>
+      <p class="val">${pct(n, META)}% de participación · meta ${META}</p>` : `<p class="val">personas que respondieron</p>`}</div><span class="num">${n}</span></div>
+    ${last}
+    <button class="item" type="button" data-go="entre-semana"><div class="ic">${icon("cal")}</div><div class="body"><p class="lbl">Entre semana</p>
+      <p class="val">${lead(S)}</p>${mini(S)}</div><span class="chev">${icon("chev")}</span></button>
+    <button class="item" type="button" data-go="fin-de-semana"><div class="ic">${icon("sun")}</div><div class="body"><p class="lbl">Fin de semana</p>
+      <p class="val">${lead(F)}</p>${mini(F)}</div><span class="chev">${icon("chev")}</span></button>
+    <button class="item" type="button" data-go="combinaciones"><div class="ic">${icon("check2")}</div><div class="body"><p class="lbl">Quieren los dos horarios nuevos</p>
+      <p class="val">${bothNew} de ${both.length} personas</p></div><span class="num">${pct(bothNew, both.length)}%</span><span class="chev">${icon("chev")}</span></button>
+  </div>`;
 
-  // --- Resultado por reunión ---
-  $("results").innerHTML = a.vs.length ? a.vs.map(q => {
-    const vals = data.map(r => r[q.key]).filter(Boolean), tot = vals.length;
-    const m = tally(vals);
-    const optN = [...m.keys()].find(v => kindOf(v) === "nuevo") || "", optA = [...m.keys()].find(v => kindOf(v) === "actual") || "";
-    const nN = m.get(optN) || 0, nA = m.get(optA) || 0;
-    const pN = pct(nN, tot), pA = tot ? 100 - pN : 0;
-    let verdict, pill;
-    if (!tot) { verdict = "Aún sin respuestas"; pill = ""; }
-    else if (nN === nA) { verdict = `Empate: ${pN}% y ${pA}%`; pill = `<span class="pill warn">Empate</span>`; }
-    else {
-      const winN = nN > nA, opt = winN ? optN : optA, p = winN ? pN : pA;
-      verdict = `${p}% prefiere el horario ${winN ? "nuevo" : "actual"}<small>${esc(cleanOpt(opt))}</small>`;
-      pill = Math.abs(pN - pA) < 10 ? `<span class="pill warn">Diferencia pequeña (${Math.abs(nN - nA)} votos)</span>`
-                                    : `<span class="pill ok">Ventaja clara</span>`;
-    }
-    const seg = (cls, cnt, p, opt) => cnt ? `<div class="seg ${cls}" style="flex-grow:${cnt}" data-tip="${esc(opt)}: ${cnt} votos (${p}%)">${p >= 12 ? p + "%" : ""}</div>` : "";
-    return `<div class="card"><h3>${esc(shortQ(q.title))}</h3>
-      <div class="meta"><span>${tot} respuestas</span></div>
-      <div class="verdict">${verdict}</div>
-      <div class="split">${tot ? seg("nuevo", nN, pN, optN) + seg("actual", nA, pA, optA) : `<div class="seg" style="flex-grow:1;background:var(--track)"></div>`}</div>
-      <div class="legend">
-        <span><i style="background:var(--nuevo)"></i>Nuevo · ${esc(cleanOpt(optN) || "—")} · <b>${nN}</b></span>
-        <span><i style="background:var(--actual)"></i>Actual · ${esc(cleanOpt(optA) || "—")} · <b>${nA}</b></span>
-      </div>${pill}</div>`;
-  }).join("") : `<div class="card empty">Aún no hay respuestas para mostrar.</div>`;
-
-  // --- Las dos reuniones juntas + respuestas por día ---
-  let det = "";
-  if (a.vs.length >= 2) {
-    const [q1, q2] = a.vs, s1 = shortQ(q1.title).toLowerCase(), s2 = shortQ(q2.title).toLowerCase();
-    const both = data.filter(r => r[q1.key] && r[q2.key]);
-    const combos = [
-      ["Los dos horarios nuevos", r => kindOf(r[q1.key]) === "nuevo" && kindOf(r[q2.key]) === "nuevo"],
-      [`Solo cambiar ${s1}`, r => kindOf(r[q1.key]) === "nuevo" && kindOf(r[q2.key]) === "actual"],
-      [`Solo cambiar ${s2}`, r => kindOf(r[q1.key]) === "actual" && kindOf(r[q2.key]) === "nuevo"],
-      ["Dejar los dos horarios actuales", r => kindOf(r[q1.key]) === "actual" && kindOf(r[q2.key]) === "actual"],
-    ].map(([name, f]) => [name, both.filter(f).length]);
-    det += barCard("¿Qué combinación prefieren?", `${both.length} personas respondieron las dos preguntas`, combos, both.length, false);
+  /* Combinaciones */
+  let combos = `<div class="empty">Aún no hay respuestas de las dos reuniones.</div>`;
+  if (both.length) {
+    const c = [
+      ["Los dos horarios nuevos", r => kindOf(r[a.semana.key]) === "nuevo" && kindOf(r[a.finde.key]) === "nuevo"],
+      ["Solo cambiar entre semana", r => kindOf(r[a.semana.key]) === "nuevo" && kindOf(r[a.finde.key]) === "actual"],
+      ["Solo cambiar fin de semana", r => kindOf(r[a.semana.key]) === "actual" && kindOf(r[a.finde.key]) === "nuevo"],
+      ["Dejar los dos horarios actuales", r => kindOf(r[a.semana.key]) === "actual" && kindOf(r[a.finde.key]) === "actual"],
+    ].map(([nm, f]) => [nm, both.filter(f).length]).sort((x, y) => y[1] - x[1]);
+    const max = Math.max(1, ...c.map(x => x[1]));
+    combos = `<div class="block"><h2>¿Qué combinación prefieren?</h2><p class="sub">${both.length} personas respondieron las dos preguntas</p>
+      <div style="margin-top:14px">${c.map(([nm, v], i) => `<div class="row${i === 0 && v ? " top" : ""}" role="img" aria-label="${nm}: ${v} personas, ${pct(v, both.length)}%">
+        <span class="name">${nm}</span><span class="track"><span class="fill" style="display:block;width:${v / max * 100}%"></span></span><span class="n"><b>${v}</b> · ${pct(v, both.length)}%</span></div>`).join("")}</div></div>`;
   }
+
+  /* Por día */
+  let porDia = `<div class="empty">Aún no hay fechas de respuesta.</div>`;
   if (a.timeCol) {
     const byDay = new Map();
-    data.forEach(r => { const d = parseDate(r[a.timeCol]); if (!d) return;
-      const key = d.toLocaleDateString("en-CA"); byDay.set(key, (byDay.get(key) || 0) + 1); });
+    data.forEach(r => { const d = parseDate(r[a.timeCol]); if (d) { const k = d.toLocaleDateString("en-CA"); byDay.set(k, (byDay.get(k) || 0) + 1); } });
     if (byDay.size) {
-      const keys = [...byDay.keys()].sort(), start = new Date(keys[0] + "T12:00"), end = new Date(keys.at(-1) + "T12:00");
-      const days = []; for (let d = new Date(start); d <= end && days.length < 60; d.setDate(d.getDate() + 1)) {
-        const key = d.toLocaleDateString("en-CA"); days.push([new Date(d), byDay.get(key) || 0]); }
-      const max = Math.max(...days.map(x => x[1]));
-      const lbl = d => d.toLocaleDateString("es-GT", { weekday: "short", day: "numeric" });
-      const every = Math.ceil(days.length / (innerWidth < 600 ? 6 : 14));
-      det += `<div class="card"><h3>Respuestas por día</h3>
-        <div class="meta"><span>Para saber si conviene recordar la encuesta</span><button class="link" data-toggle>Ver tabla</button></div>
-        <div class="viz"><div class="days">${days.map(([d, c]) => `<div class="day" data-tip="${esc(d.toLocaleDateString("es-GT", { weekday: "long", day: "numeric", month: "long" }))}: ${c} respuestas">
-          ${days.length <= 14 && c ? `<span class="v">${c}</span>` : ""}<div class="b" style="height:${c / max * 100}%"></div></div>`).join("")}</div>
-        <div class="daylabels">${days.map(([d], i) => `<span>${i % every === 0 ? esc(lbl(d)) : ""}</span>`).join("")}</div></div>
-        <table hidden><thead><tr><th>Día</th><th class="n">Respuestas</th></tr></thead><tbody>
-        ${days.map(([d, c]) => `<tr><td>${esc(d.toLocaleDateString("es-GT", { weekday: "long", day: "numeric", month: "long" }))}</td><td class="n">${c}</td></tr>`).join("")}</tbody></table></div>`;
+      const keys = [...byDay.keys()].sort(), end = new Date(keys.at(-1) + "T12:00"), days = [];
+      for (let d = new Date(keys[0] + "T12:00"); d <= end && days.length < 60; d.setDate(d.getDate() + 1)) days.push([new Date(d), byDay.get(d.toLocaleDateString("en-CA")) || 0]);
+      const max = Math.max(...days.map(x => x[1])), every = Math.ceil(days.length / (innerWidth < 720 ? 6 : 12));
+      const long = d => d.toLocaleDateString("es-GT", { weekday: "long", day: "numeric", month: "long" });
+      porDia = `<div class="block"><h2>Respuestas por día</h2><p class="sub">Para saber si conviene recordar la encuesta</p>
+        <div class="viz"><div class="days">${days.map(([d, c]) => `<div class="day" role="img" aria-label="${esc(long(d))}: ${c} respuestas">${days.length <= 14 && c ? `<span class="v">${c}</span>` : ""}<div class="b" style="height:${c / max * 100}%"></div></div>`).join("")}</div>
+        <div class="daylabels" aria-hidden="true">${days.map(([d], i) => `<span>${i % every === 0 ? esc(d.toLocaleDateString("es-GT", { weekday: "short", day: "numeric" })) : ""}</span>`).join("")}</div></div>
+        <button class="tlink" type="button" data-toggle aria-expanded="false">Ver tabla</button>
+        <table hidden><thead><tr><th scope="col">Día</th><th scope="col" class="r">Respuestas</th></tr></thead><tbody>
+        ${days.map(([d, c]) => `<tr><td>${esc(long(d))}</td><td class="r">${c}</td></tr>`).join("")}</tbody></table></div>`;
     }
   }
-  $("detail").innerHTML = det;
-  $("crossTitle").hidden = !det;
 
-  // --- Otras preguntas (si el formulario crece) ---
-  $("others").innerHTML = a.other.length ? `<h2 class="section">Otras preguntas</h2><div class="grid">` +
-    a.other.map(q => { const vals = data.map(r => r[q.key]).filter(Boolean);
-      return barCard(q.title, `${vals.length} respuestas`, [...tally(vals)].sort((x, y) => y[1] - x[1]), vals.length, true); }).join("") + `</div>` : "";
+  $("panels").innerHTML = panel("resumen", resumen) + panel("entre-semana", meetingBlock("Entre semana", a.semana))
+    + panel("fin-de-semana", meetingBlock("Fin de semana", a.finde)) + panel("combinaciones", combos) + panel("por-dia", porDia);
+  go(current, false);
 }
 
-function barCard(title, meta, items, total, sorted) {
-  const max = Math.max(1, ...items.map(x => x[1])), top = Math.max(...items.map(x => x[1]));
-  return `<div class="card"><h3>${esc(title)}</h3>
-    <div class="meta"><span>${esc(meta)}</span><button class="link" data-toggle>Ver tabla</button></div>
-    <div class="viz">${items.map(([name, c]) => `<div class="row${c === top && c > 0 ? " top" : ""}" data-tip="${esc(name)}: ${c} (${pct(c, total)}%)">
-      <div class="name">${esc(name)}</div><div><div class="fill" style="width:${c / max * 100}%"></div></div>
-      <div class="num">${c} · ${pct(c, total)}%</div></div>`).join("")}</div>
-    <table hidden><thead><tr><th>Opción</th><th class="n">Personas</th><th class="n">%</th></tr></thead><tbody>
-    ${items.map(([name, c]) => `<tr><td>${esc(name)}</td><td class="n">${c}</td><td class="n">${pct(c, total)}%</td></tr>`).join("")}</tbody></table></div>`;
-}
-
-/* ---------- Eventos ---------- */
+/* ---------- Acciones ---------- */
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-toggle]"); if (!b) return;
-  const card = b.closest(".card"), t = card.querySelector("table"), v = card.querySelector(".viz");
-  const show = t.hidden; t.hidden = !show; v.hidden = show; b.textContent = show ? "Ver gráfica" : "Ver tabla";
-});
-const tip = $("tip");
-document.addEventListener("mousemove", e => {
-  const el = e.target.closest("[data-tip]");
-  if (!el) { tip.style.opacity = 0; return; }
-  tip.textContent = el.dataset.tip; tip.style.opacity = 1;
-  tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px";
-  tip.style.top = (e.clientY + 14) + "px";
+  const blk = b.closest(".block"), t = blk.querySelector("table"), v = blk.querySelector(".viz"), show = t.hidden;
+  t.hidden = !show; v.hidden = show; b.textContent = show ? "Ver gráfica" : "Ver tabla"; b.setAttribute("aria-expanded", String(show));
 });
 $("refresh").addEventListener("click", () => source ? fetchSource() : render());
-$("print").addEventListener("click", () => window.print());
+$("print").addEventListener("click", () => { document.body.classList.add("printing"); print(); document.body.classList.remove("printing"); });
 $("present").addEventListener("click", () => {
-  const on = document.body.classList.toggle("present");
+  const on = document.body.classList.toggle("present"); $("present").setAttribute("aria-pressed", String(on));
   try { on ? document.documentElement.requestFullscreen?.() : document.fullscreenElement && document.exitFullscreen(); } catch (e) {}
 });
-document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement) document.body.classList.remove("present"); });
+document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement) { document.body.classList.remove("present"); $("present").setAttribute("aria-pressed", "false"); } });
 $("connect").addEventListener("click", () => connect($("sheetUrl").value));
 $("file").addEventListener("change", e => {
   const f = e.target.files[0]; if (!f) return; clearInterval(timer); source = null;
-  const r = new FileReader(); r.onload = () => { setData(parseCSV(r.result)); $("notice").innerHTML = `Archivo cargado: <b>${esc(f.name)}</b>`; };
-  r.readAsText(f, "UTF-8");
+  const r = new FileReader(); r.onload = () => { setData(parseCSV(r.result)); setStatus("ok", `Archivo cargado: <b>${esc(f.name)}</b>`); }; r.readAsText(f, "UTF-8");
 });
-$("sample").addEventListener("click", () => { clearInterval(timer); source = null; setData(parseCSV(sampleCSV()));
-  $("notice").innerHTML = "Estás viendo <b>datos de ejemplo</b>."; });
-
+$("sample").addEventListener("click", () => { clearInterval(timer); source = null; setData(parseCSV(sampleCSV())); setStatus("wait", "Estás viendo <b>datos de ejemplo</b>"); });
 function sampleCSV() {
   let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   const H = ["_id", "_submission_time", "¿Qué horario prefiere para la reunión de entre semana?", "¿Qué horario prefiere para la reunión del fin de semana?"];
-  const lines = [H.map(h => `"${h}"`).join(";")];
+  const lines = [H.map(h => `"${h}"`).join(";")], base = Date.now() - 8 * 864e5;
   for (let i = 0; i < 72; i++) {
-    const d = new Date(Date.UTC(2026, 10, 27 + Math.floor(Math.pow(rnd(), 1.8) * 9), 14 + Math.floor(rnd() * 10), Math.floor(rnd() * 60)));
+    const d = new Date(base + Math.pow(rnd(), 1.8) * 8 * 864e5);
     const sem = rnd() < 0.6 ? "Miércoles 6:30 p.m. (nuevo)" : "Jueves 7:00 p.m. (actual)";
     const fin = rnd() < (sem.includes("nuevo") ? 0.8 : 0.5) ? "Domingo 9:00 a.m. (nuevo)" : "Sábado 6:00 p.m. (actual)";
     lines.push([i, d.toISOString().slice(0, 19), sem, fin].map(v => `"${v}"`).join(";"));
@@ -426,8 +477,9 @@ function sampleCSV() {
 }
 
 /* ---------- Inicio ---------- */
+buildNav(); render();
 if (params.has("admin")) document.querySelectorAll(".admin").forEach(el => el.hidden = false);
-if (params.has("ejemplo")) { $("sample").click(); }
+if (params.has("ejemplo")) $("sample").click();
 else connect(params.get("sheet") || (params.has("admin") ? (() => { try { return localStorage.getItem("sheetUrl"); } catch (e) {} })() : null) || DEFAULT_URL);
 </script>
 </body>
